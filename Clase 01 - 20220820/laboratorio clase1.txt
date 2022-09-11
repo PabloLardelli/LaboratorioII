@@ -1,0 +1,36 @@
+LABORATORIO DE COMPUTACION II
+
+Servidor: sqlgabineteinformatico.frc.utn.edu.ar
+Usuario: alumnolab22
+Contraseña: SQL-Alu22
+
+PARCIALES:
+
+1º 29/9/2022  ---> UNIDAD 1 Y 2
+2º 27/10/2022 ---> UNIDAD 3 Y 4
+
+1 RECUPERATORIO NO INTEGRADOR (SE TOMA EL PARCIAL DESAPROBADO)  --> 17/11/2022
+
+1 TRABAJO PRACTICO INTEGRADOR
+ - Grupos de 5 +- 1
+ - 1º parte: 1/9  diseño de base de datos
+ - 2º parte: 2/10 consultas SQL 
+ - 3º parte: exposición del programa que muestra las consultas
+
+CLASE 1 (11/8/2022):
+
+	PROCEDIMIENTOS ALMACENADOS
+
+Es un conjunto de instrucciones que permiten almacenar tareas repetitivas.
+
+- CREAR Y EJECUTAR:
+	create procedure NOMBREPROCEDIMIENTO
+		as INSTRUCCIONES
+
+- MODIFICAR:
+	alter procedure NOMBREPROCEDIMIENTO
+		as INSTRUCCIONES
+
+- ELIMINAR:
+	drop procedure NOMBREPROCEDIMIENTO
+
