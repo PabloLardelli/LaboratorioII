@@ -47,10 +47,9 @@ where cod_cliente not in (select cod_cliente
 --Listar los datos de las facturas de los clientes que solo vienen a comprar
 --en febrero es decir que todas las veces que vienen a comprar haya sido en el mes de febrero (y no otro mes)
 
-
---VER
-select c.cod_cliente, ape_cliente + ' ' + nom_cliente Cliente
+select f.nro_factura, c.cod_cliente, ape_cliente + ' ' + nom_cliente Cliente, f.fecha
 from clientes c
+join facturas f on c.cod_cliente = f.cod_cliente
 where 2 = all (select MONTH(fecha)
 				from facturas f
 				where c.cod_cliente = f.cod_cliente) 
@@ -59,18 +58,24 @@ where 2 = all (select MONTH(fecha)
 --Ejercicio 2.1.6
 --Mostrar los datos de las facturas para los casos en que por año se hayan hecho menos de 9 facturas. 
 
-
+select f.nro_factura, ape_cliente + ' ' + nom_cliente Cliente, year(f.fecha) 'Año', f.fecha 'Fecha' 
+from facturas f
+join clientes c on c.cod_cliente = f.cod_cliente
+where 9 >		(select count(*)
+				from facturas
+				where year(f.fecha) = year(fecha)
+				)
 
 --Ejercicio 2.1.7
 --Emitir un reporte con las facturas cuyo importe total haya sido superior a
 --1.500 (incluir en el reporte los datos de los artículos vendidos y los importes)
 
-select f.nro_factura Factura, a.descripcion Articulos, sum(d.cantidad*d.pre_unitario) 'Importe total'
+select f.nro_factura Factura, f.fecha 'Fecha', (d.cantidad*d.pre_unitario) 'Importe'
 from facturas f
 join detalle_facturas d on f.nro_factura = d.nro_factura
-join articulos a on a.cod_articulo = d.cod_articulo
-group by f.nro_factura, a.descripcion
-having sum(d.cantidad*d.pre_unitario) > 1500
+where 1500 < (select sum(d.cantidad*d.pre_unitario) 
+				from detalle_facturas
+				where d.nro_factura = nro_factura)
 order by 1
 
 
@@ -84,6 +89,16 @@ where cod_vendedor not in (select cod_vendedor
 							where cod_cliente in (1,6)
 							and v.cod_vendedor = f.cod_vendedor)
 
+--resolucion profe kunda
+
+select v.nom_vendedor+' '+v.ape_vendedor Vendedor
+from vendedores v
+where  not exists (select cod_vendedor
+					from facturas f
+					where cod_cliente in (1,6)
+					and v.cod_vendedor = f.cod_vendedor)
+	
+
 --Ejercicio 2.1.9
 --Listar los datos de los artículos que superaron el promedio del Importe de ventas de $ 1.000
 
@@ -95,6 +110,14 @@ where a.cod_articulo in (select cod_articulo
 						group by cod_articulo
 						having avg(pre_unitario*cantidad)>1000)
 order by 1					
+
+--resolucion profe kunda
+
+select a.cod_articulo, a.descripcion
+from articulos a
+where 1000 < (select avg(d.pre_unitario*d.cantidad)
+				from detalle_facturas d
+				where cod_articulo = a.cod_articulo)
 
 
 --Ejercicio 2.2.1
